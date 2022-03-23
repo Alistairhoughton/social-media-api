@@ -1,6 +1,6 @@
 const { User, Thought } = require('../models');
 
-// ---------------------------- get all users
+// ----------------------------------------------------------- get all users
 
 const userController = {
   getAllUsers(req, res) {
@@ -12,7 +12,7 @@ const userController = {
         res.status(400).json(err);
       });
   },
-  // get single user by id
+  // ------------------------------------------------------ get single user by id
 
   getOneUser(req, res) {
     User.findOne({ _id: req.params.userId })
@@ -30,6 +30,21 @@ const userController = {
         res.status(500).json(err);
       });
   },
+
+  // --------------------------------------------------------------------- create a new user 
+
+  createUser(req, res) {
+    User.create(req.body)
+      .then((userData) => {
+        res.json(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+
+  //
 
 };
 
