@@ -87,11 +87,31 @@ const userController = {
       .catch((err) => res.status(400).json(err));
   },
 
-  // add friend -------------------------------------------------------------------------------------userData
+  // add friend -------------------------------------------------------------------------------------
   addFriend(req, res) {
     User.findOneAndUpdate(
       { _id: req.params.userId },
       { $addToSet: { friends: req.params.friendId } },
+      { new: true }
+    )
+      .then((userData) => {
+        if (!userData) {
+          return res.status(404).json({ message: "No user with this id!" });
+        }
+        res.json(userData);
+      })
+      .catch((err) => {
+        console.log(err);
+        res.status(500).json(err);
+      });
+  },
+
+  // delete friend ---------------------------------------------------------------------------------------------------
+
+  removeFriend(req, res) {
+    User.findOneAndUpdate(
+      { _id: req.params.userId },
+      { $pull: { friends: req.params.friendId } },
       { new: true }
     )
       .then((userData) => {
